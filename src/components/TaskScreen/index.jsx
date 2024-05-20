@@ -5,23 +5,20 @@ import { FaCheck } from "react-icons/fa";
 
 import React from 'react'
 
-const TaskScreen = () => {
+const TaskScreen = ({ tasks, onToggleTask, onDeleteTask }) => {
+
     return (
         <TaskListContainer>
-            <TaskContainer>
-                <Task>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer varius vitae ex vitae consectetur. Sed id elit consequat, blandit metus id.</Task>
-                <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
-                    <DeleteButton><IoIosTrash /></DeleteButton>
-                    <DoneButton><FaCheck /></DoneButton>
-                </div>
-            </TaskContainer>
-            <TaskContainer>
-                <Task>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer varius vitae ex vitae consectetur. Sed id elit consequat, blandit metus id.</Task>
-                <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
-                    <DeleteButton><IoIosTrash /></DeleteButton>
-                    <DoneButton className='done'><FaCheck /></DoneButton>
-                </div>
-            </TaskContainer>
+            {tasks.map((task, index) => (
+                <TaskContainer key={index}>
+                    <Task className={task.checked ? 'done' : ''}>{task.text}</Task>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                        <DeleteButton onClick={() => onDeleteTask(index)}><IoIosTrash /></DeleteButton>
+                        <DoneButton onClick={() => onToggleTask(index)} className={task.checked ? 'done' : ''}><FaCheck /></DoneButton>
+                    </div>
+                </TaskContainer>
+            ))}
+
         </TaskListContainer>
     )
 }
@@ -51,6 +48,10 @@ const Task = styled.div`
     background-color: #F1E6F8;
     color: #535353;
     font-size: 12px;
+
+    &.done {
+        background-color: #C4DAB9;
+    }
 `
 
 const DeleteButton = styled.button`

@@ -3,23 +3,19 @@ import { useState } from 'react'
 
 import React from 'react'
 
-function NewTaskButton() {
-    const [tasksList, setTasksList] = useState([])
-    const [task, setTask] = useState('')
+function NewTaskButton({ onAddTask }) {
+    const [taskText, setTaskText] = useState('')
     const [isOpen, setIsOpen] = useState(false)
 
-    const handleUpdateTasks = (newTask) => {
-        setTasksList([newTask, ...tasksList]);
-    };
-
     const handleAddTask = () => {
-        handleUpdateTasks({ task: task, checked: false })
+        onAddTask({ text: taskText, checked: false })
     }
 
     function checkOpenStatus() {
-        if (isOpen && task !== '') {
+        if (isOpen && taskText !== '') {
             setIsOpen(false)
             handleAddTask()
+            setTaskText('')
         } else {
             setIsOpen(true)
         }
@@ -33,7 +29,7 @@ function NewTaskButton() {
         const textTask = e.target.value
 
         if (textTask.length <= 140) {
-            setTask(textTask)
+            setTaskText(textTask)
         }
     }
 
@@ -45,9 +41,9 @@ function NewTaskButton() {
                 <textarea
                 className='inputTask'
                 placeholder='Digite aqui sua nova tarefa...'
-                value={task}
+                value={taskText}
                 onChange={handleChangeTextTask}  />
-                <span className='counterInput'>{task.length}/140</span>
+                <span className='counterInput'>{taskText.length}/140</span>
             </NewTask>
             <Button onClick={checkOpenStatus}>+&nbsp;&nbsp;&nbsp;&nbsp;Nova Tarefa</Button>
         </div>
